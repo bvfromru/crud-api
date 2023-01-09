@@ -1,12 +1,25 @@
-import { createServer, IncomingMessage, ServerResponse } from "http";
+import dotenv from "dotenv";
+import { IncomingMessage, ServerResponse, createServer } from "http";
 
-const HOST = "localhost";
-const PORT = 8000;
+dotenv.config();
+
+const PORT = Number(process.env.PORT) || 5000;
 
 const server = createServer((req: IncomingMessage, res: ServerResponse) => {
-  console.log("first");
+  console.log(req.url);
+  switch (req.method) {
+    case "GET":
+      switch (req.url) {
+        case "/api/users":
+          res.statusCode = 200;
+          res.setHeader("Content-Type", "text/plain");
+          res.end("Hi!");
+          break;
+      }
+      break;
+  }
 });
 
-server.listen(PORT, HOST, () => {
-  console.log(`Server is listening on ${HOST}:${PORT}`);
+server.listen(PORT, () => {
+  console.log(`Server is listening on port ${PORT}`);
 });
