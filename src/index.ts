@@ -8,5 +8,5 @@ const server = createServer((req: IncomingMessage, res: ServerResponse) => {
 });
 
 server.listen(PORT, HOST, () => {
-  console.log("Server started");
+  console.log(`Server is listening on ${HOST}:${PORT}`);
 });
