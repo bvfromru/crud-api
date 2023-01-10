@@ -1,25 +1,19 @@
 import dotenv from "dotenv";
-import { IncomingMessage, ServerResponse, createServer } from "http";
+import Application from "./framework/Application.js";
+import parseJson from "./framework/parseJson.js";
+import parseUrl from "./framework/parseUrl.js";
+import { userRouter } from "./userRouter.js";
 
 dotenv.config();
-
 const PORT = Number(process.env.PORT) || 5000;
 
-const server = createServer((req: IncomingMessage, res: ServerResponse) => {
-  console.log(req.url);
-  switch (req.method) {
-    case "GET":
-      switch (req.url) {
-        case "/api/users":
-          res.statusCode = 200;
-          res.setHeader("Content-Type", "text/plain");
-          res.end("Hi!");
-          break;
-      }
-      break;
-  }
-});
+const app = new Application();
 
-server.listen(PORT, () => {
+app.use(parseJson);
+// TODO Change magic string
+app.use(parseUrl("http://localhost:4000"));
+
+app.addRouter(userRouter);
+app.listen(PORT, () => {
   console.log(`Server is listening on port ${PORT}`);
 });
