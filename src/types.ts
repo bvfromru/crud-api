@@ -8,6 +8,7 @@ export interface IResponse extends ServerResponse {
 export interface IRequest extends IncomingMessage {
   body?: JSON;
   pathname?: string;
+  id?: string;
 }
 
 export type THandler = (req: IRequest, res: IResponse) => void;

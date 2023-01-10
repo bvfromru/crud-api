@@ -1,19 +1,19 @@
 import dotenv from "dotenv";
+import { defaultPort } from "./constants.js";
 import Application from "./framework/Application.js";
 import parseJson from "./framework/parseJson.js";
 import parseUrl from "./framework/parseUrl.js";
-import { userRouter } from "./userRouter.js";
+import { usersRouter } from "./usersRouter.js";
 
 dotenv.config();
-const PORT = Number(process.env.PORT) || 5000;
+const PORT = Number(process.env.PORT) || defaultPort;
 
 const app = new Application();
 
 app.use(parseJson);
-// TODO Change magic string
-app.use(parseUrl("http://localhost:4000"));
+app.use(parseUrl);
+app.addRouter(usersRouter);
 
-app.addRouter(userRouter);
 app.listen(PORT, () => {
   console.log(`Server is listening on port ${PORT}`);
 });
