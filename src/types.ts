@@ -29,8 +29,9 @@ export interface IUser {
 export enum Messages {
   serverError = "Internal server error",
   invalidBody = "Request body does not contain required fields",
-  userDoesntExist = "User doesn't exist",
+  invalidEndpoint = "Invalid endpoint",
   invalidUserId = "User id is invalid",
+  userDoesntExist = "User doesn't exist",
   userDeleted = "User deleted",
 }
 

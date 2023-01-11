@@ -1,6 +1,6 @@
 import EventEmitter from "events";
-import { Server, ServerResponse, createServer } from "http";
-import { IRequest, THandler } from "../types.js";
+import { Server, createServer } from "http";
+import { Codes, IRequest, IResponse, Messages, THandler } from "../types.js";
 import Router from "./Router.js";
 
 export default class Application {
@@ -35,22 +35,33 @@ export default class Application {
   }
 
   private _createServer() {
-    return createServer((req: IRequest, res: ServerResponse) => {
-      let body = "";
-      req.on("data", (chunk) => {
-        body += chunk;
-      });
+    return createServer((req: IRequest, res: IResponse) => {
+      try {
+        let body = "";
+        req.on("data", (chunk) => {
+          body += chunk;
+        });
 
-      req.on("end", () => {
-        if (body) {
-          req.body = JSON.parse(body);
-        }
-        this.middlewares.forEach((middleware) => middleware(req, res));
-        const emitted = this.emitter.emit(this._getRouteMask(req.pathname!, req.method!), req, res);
-        if (!emitted) {
-          res.end();
-        }
-      });
+        req.on("end", () => {
+          try {
+            if (body) {
+              req.body = JSON.parse(body);
+            }
+            this.middlewares.forEach((middleware) => middleware(req, res));
+            const emitted = this.emitter.emit(this._getRouteMask(req.pathname!, req.method!), req, res);
+            if (!emitted) {
+              res.send!(Messages.invalidEndpoint, Codes.notFound);
+            }
+          } catch (err) {
+            res.writeHead(Codes.serverError);
+            res.end(Messages.serverError);
+          }
+        });
+      } catch (err) {
+        // TODO Check if this working
+        res.writeHead(Codes.serverError);
+        res.end(Messages.serverError);
+      }
     });
   }
 
