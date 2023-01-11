@@ -16,7 +16,5 @@ export default (req: IRequest, res: ServerResponse) => {
     if (id) {
       req.id = id.slice(1);
     }
-    console.log(req.pathname);
-    console.log(req.id);
   });
 };
