@@ -68,4 +68,8 @@ export default class Application {
   private _getRouteMask(path: string, method: string): string {
     return `[${path}]:[${method}]`;
   }
+
+  public close() {
+    this.server.close();
+  }
 }

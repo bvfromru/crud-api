@@ -8,7 +8,7 @@ import { usersRouter } from "./usersRouter";
 dotenv.config();
 const PORT = Number(process.env.PORT) || defaultPort;
 
-const app = new Application();
+export const app = new Application();
 
 app.use(parseJson);
 app.use(parseUrl);
