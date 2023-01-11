@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from "uuid";
-import { Codes, IRequest, IResponse, IUser, Messages } from "./types.js";
-import { users } from "./usersDB.js";
-import { validateUserData, validateUserId } from "./utils.js";
+import { Codes, IRequest, IResponse, IUser, Messages } from "./types";
+import { users } from "./usersDB";
+import { validateUserData, validateUserId } from "./utils";
 
 const usersController = {
   getUsers(req: IRequest, res: IResponse) {

@@ -1,5 +1,5 @@
 import { ServerResponse } from "http";
-import { endpoints } from "../constants.js";
+import { endpoints } from "../constants";
 import { IRequest } from "../types";
 
 export default (req: IRequest, res: ServerResponse) => {

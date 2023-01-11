@@ -15,7 +15,6 @@ export default class Router {
       throw new Error(`${method} with path ${path} already exists`);
     }
     endpoint[method] = handler;
-
   }
 
   public get(path: string, handler: THandler) {

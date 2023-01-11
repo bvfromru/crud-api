@@ -1,7 +1,7 @@
 import EventEmitter from "events";
 import { Server, createServer } from "http";
-import { Codes, IRequest, IResponse, Messages, THandler } from "../types.js";
-import Router from "./Router.js";
+import { Codes, IRequest, IResponse, Messages, THandler } from "../types";
+import Router from "./Router";
 
 export default class Application {
   emitter: EventEmitter;

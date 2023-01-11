@@ -1,5 +1,5 @@
-import Router from "./framework/Router.js";
-import userController from "./usersController.js";
+import Router from "./framework/Router";
+import userController from "./usersController";
 
 export const usersRouter = new Router();
 
