@@ -1,6 +1,6 @@
 import request from "supertest";
 import { app } from ".";
-import { Codes, IUser } from "./types";
+import { Codes, IUser, Messages } from "./types";
 import { validateUserId } from "./utils";
 
 const testUser1: Omit<IUser, "id"> = {
@@ -41,7 +41,7 @@ describe("Full cycle of CRUD operations with correct data", () => {
     expect(validateUserId(user.id)).toBe(true);
   });
 
-  it("should get all users and check that out testUser was added", async () => {
+  it("should get all users and check that our testUser was added", async () => {
     const res = await response.get("/api/users");
     expect(res.statusCode).toBe(Codes.ok);
     const users = res.body as IUser[];
@@ -79,5 +79,21 @@ describe("Full cycle of CRUD operations with correct data", () => {
     const res = await response.get("/api/users");
     expect(res.statusCode).toBe(Codes.ok);
     expect(res.body).toEqual([]);
+  });
+});
+
+describe("Operations with wrong endpoints and wrong data", () => {
+  const response = request(app.server);
+  let userId: string;
+
+  afterAll((done) => {
+    app.close();
+    done();
+  });
+
+  it("should try invalid endpoint and get error", async () => {
+    const res = await response.get("/api/abcde");
+    expect(res.statusCode).toBe(Codes.notFound);
+    expect(res.text).toBe(Messages.invalidEndpoint);
   });
 });

@@ -1,6 +1,6 @@
 import EventEmitter from "events";
 import { Server, createServer } from "http";
-import { Codes, IRequest, IResponse, Messages, THandler } from "../types";
+import { Codes, IError, IRequest, IResponse, Messages, THandler } from "../types";
 import Router from "./Router";
 
 export default class Application {
@@ -20,6 +20,12 @@ export default class Application {
 
   public listen(port: number, callback: () => void) {
     this.server.listen(port, callback);
+
+    this.server.on("error", (err: IError) => {
+      if (err.code === "EACCES") {
+        console.log(`No access to port: ${port}`);
+      }
+    });
   }
 
   public addRouter(router: Router) {
@@ -59,7 +65,8 @@ export default class Application {
         });
       } catch (err) {
         // TODO Check if this working
-        res.writeHead(Codes.serverError);
+        res.statusCode = Codes.ok;
+        res.setHeader("Content-Type", "text/plain");
         res.end(Messages.serverError);
       }
     });

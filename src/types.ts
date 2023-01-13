@@ -43,3 +43,7 @@ export enum Codes {
   notFound = 404,
   serverError = 500,
 }
+
+export interface IError extends Error {
+  code?: string;
+}

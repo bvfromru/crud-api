@@ -28,6 +28,7 @@ const usersController = {
       if (validateUserData(user)) {
         user.id = uuidv4();
         users.push(user);
+        // process.send!(users);
         return res.send!(user, Codes.create);
       }
     }

@@ -1,3 +1,7 @@
 import { IUser } from "./types";
 
-export const users: IUser[] = [];
+export let users: IUser[] = [];
+
+export const setUsers = (db: IUser[]) => {
+  users = [...db];
+};
