@@ -42,33 +42,26 @@ export default class Application {
 
   private _createServer() {
     return createServer((req: IRequest, res: IResponse) => {
-      try {
-        let body = "";
-        req.on("data", (chunk) => {
-          body += chunk;
-        });
+      let body = "";
+      req.on("data", (chunk) => {
+        body += chunk;
+      });
 
-        req.on("end", () => {
-          try {
-            if (body) {
-              req.body = JSON.parse(body);
-            }
-            this.middlewares.forEach((middleware) => middleware(req, res));
-            const emitted = this.emitter.emit(this._getRouteMask(req.pathname!, req.method!), req, res);
-            if (!emitted) {
-              res.send!(Messages.invalidEndpoint, Codes.notFound);
-            }
-          } catch (err) {
-            res.writeHead(Codes.serverError);
-            res.end(Messages.serverError);
+      req.on("end", () => {
+        try {
+          if (body) {
+            req.body = JSON.parse(body);
           }
-        });
-      } catch (err) {
-        // TODO Check if this working
-        res.statusCode = Codes.ok;
-        res.setHeader("Content-Type", "text/plain");
-        res.end(Messages.serverError);
-      }
+          this.middlewares.forEach((middleware) => middleware(req, res));
+          const emitted = this.emitter.emit(this._getRouteMask(req.pathname!, req.method!), req, res);
+          if (!emitted) {
+            res.send!(Messages.invalidEndpoint, Codes.notFound);
+          }
+        } catch (err) {
+          res.writeHead(Codes.serverError);
+          res.end(Messages.serverError);
+        }
+      });
     });
   }
 

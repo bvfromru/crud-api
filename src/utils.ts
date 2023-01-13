@@ -14,3 +14,11 @@ export const validateUserData = (user: IUser) => {
 export const validateUserId = (userId: string) => {
   return uuidValidate(userId);
 };
+
+export const getNextWorkerId = (currentWorkerID: number, numCPUs: number) => {
+  if (currentWorkerID === numCPUs - 1) {
+    return 0;
+  } else {
+    return (currentWorkerID += 1);
+  }
+};

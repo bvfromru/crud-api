@@ -46,8 +46,6 @@ const usersController = {
       if (validateUserData(user)) {
         user.id = userId;
         const userIndex = users.findIndex((user) => user.id === userId);
-        console.log(userId);
-        console.log(userIndex);
         if (userIndex > -1) {
           users[userIndex] = user;
           return res.send!(user, Codes.ok);

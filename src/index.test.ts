@@ -1,7 +1,9 @@
 import request from "supertest";
-import { app } from ".";
+import Application from "./framework/Application";
 import { Codes, IUser, Messages } from "./types";
 import { validateUserId } from "./utils";
+
+const app = new Application();
 
 const testUser1: Omit<IUser, "id"> = {
   username: "testUser1",
