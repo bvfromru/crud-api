@@ -1,13 +1,13 @@
 import cluster from "cluster";
 import dotenv from "dotenv";
 import { startBalancer } from "./balancer";
-import { defaultPort } from "./constants";
+import { DEFAULT_PORT } from "./constants";
 import { startServer } from "./server";
 import { IUser } from "./types";
 import { setUsers } from "./usersDB";
 
 dotenv.config();
-const PORT = Number(process.env.PORT) || defaultPort;
+const PORT = Number(process.env.PORT) || DEFAULT_PORT;
 
 try {
   if (process.argv[2] === "--multi") {

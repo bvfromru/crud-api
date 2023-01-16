@@ -1,5 +1,5 @@
 import { ServerResponse } from "http";
-import { endpoints } from "../constants";
+import { ENDPOINTS } from "../constants";
 import { IRequest } from "../types";
 
 export default (req: IRequest, res: ServerResponse) => {
@@ -8,7 +8,7 @@ export default (req: IRequest, res: ServerResponse) => {
     pathName = pathName.slice(0, pathName.length - 1);
   }
 
-  Object.values(endpoints).forEach((endpoint) => {
+  Object.values(ENDPOINTS).forEach((endpoint) => {
     if (pathName.includes(endpoint)) {
       req.pathname = endpoint;
     }

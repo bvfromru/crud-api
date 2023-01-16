@@ -1,3 +1,3 @@
-export const defaultPort = 4000;
+export const DEFAULT_PORT = 4000;
 
-export const endpoints = { users: "api/users" };
+export const ENDPOINTS = { users: "api/users" };

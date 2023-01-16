@@ -1,9 +1,11 @@
 import request from "supertest";
-import Application from "./framework/Application";
+import { v4 as uuidv4 } from "uuid";
+import { DEFAULT_PORT } from "./constants";
+import { startServer } from "./server";
 import { Codes, IUser, Messages } from "./types";
 import { validateUserId } from "./utils";
 
-const app = new Application();
+const app = startServer(DEFAULT_PORT, "Testing");
 
 const testUser1: Omit<IUser, "id"> = {
   username: "testUser1",
@@ -17,7 +19,15 @@ const testUser2: Omit<IUser, "id"> = {
   hobbies: ["eat", "sleep", "sex"],
 };
 
-describe("Full cycle of CRUD operations with correct data", () => {
+const testUserWithWrongBody = {
+  age: 42,
+  hobbies: ["eat", "sleep", "sex"],
+};
+
+const wrongID = "d8cfe98e-178c-4fc2-a68d-18ddc19f4eb2-3-3";
+const nonExistId = uuidv4();
+
+describe("Scenario 1 - Full cycle of CRUD operations with correct data", () => {
   const response = request(app.server);
   let userId: string;
 
@@ -84,7 +94,7 @@ describe("Full cycle of CRUD operations with correct data", () => {
   });
 });
 
-describe("Operations with wrong endpoints and wrong data", () => {
+describe("Scenario 2 - Operations with invalid endpoints and invalid data", () => {
   const response = request(app.server);
   let userId: string;
 
@@ -93,9 +103,60 @@ describe("Operations with wrong endpoints and wrong data", () => {
     done();
   });
 
-  it("should try invalid endpoint and get error", async () => {
+  it("should try invalid endpoint and get 404 error", async () => {
     const res = await response.get("/api/abcde");
     expect(res.statusCode).toBe(Codes.notFound);
     expect(res.text).toBe(Messages.invalidEndpoint);
+  });
+
+  it("should try to get user data by incorrect ID and get 400 error", async () => {
+    const res = await response.get(`/api/users/${wrongID}`);
+    expect(res.statusCode).toBe(Codes.invalid);
+    expect(res.text).toBe(Messages.invalidUserId);
+  });
+
+  it("should try to add new user with body that does not contain required fields and get 400 error", async () => {
+    const res = await response.post("/api/users").send(testUserWithWrongBody);
+    expect(res.statusCode).toBe(Codes.invalid);
+    expect(res.text).toBe(Messages.invalidBody);
+  });
+
+  it("should try to update user data by incorrect ID and get 400 error", async () => {
+    const res = await response.put(`/api/users/${wrongID}`).send(testUser2);
+    expect(res.statusCode).toBe(Codes.invalid);
+    expect(res.text).toBe(Messages.invalidUserId);
+  });
+
+  it("should try to delete user by incorrect ID and get 400 error", async () => {
+    const res = await response.delete(`/api/users/${wrongID}`);
+    expect(res.statusCode).toBe(Codes.invalid);
+    expect(res.text).toBe(Messages.invalidUserId);
+  });
+});
+
+describe("Scenario 3 - Operations with non-exist users", () => {
+  const response = request(app.server);
+
+  afterAll((done) => {
+    app.close();
+    done();
+  });
+
+  it("should try to get user data of non-exist user and get 404 error", async () => {
+    const res = await response.get(`/api/users/${nonExistId}`);
+    expect(res.statusCode).toBe(Codes.notFound);
+    expect(res.text).toBe(Messages.userDoesntExist);
+  });
+
+  it("should try to update user data of non-exist user and get 404 error", async () => {
+    const res = await response.put(`/api/users/${nonExistId}`).send(testUser2);
+    expect(res.statusCode).toBe(Codes.notFound);
+    expect(res.text).toBe(Messages.userDoesntExist);
+  });
+
+  it("should try to delete non-exist user and get 404 error", async () => {
+    const res = await response.delete(`/api/users/${nonExistId}`);
+    expect(res.statusCode).toBe(Codes.notFound);
+    expect(res.text).toBe(Messages.userDoesntExist);
   });
 });

@@ -12,4 +12,5 @@ export const startServer = (port: number, startMsg: string) => {
   app.listen(port, () => {
     console.log(startMsg);
   });
+  return app;
 };
