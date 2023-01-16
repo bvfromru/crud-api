@@ -22,3 +22,7 @@ export const getNextWorkerId = (currentWorkerID: number, numCPUs: number) => {
     return (currentWorkerID += 1);
   }
 };
+
+export const isMulti = () => {
+  return process.argv[2] === "--multi";
+};

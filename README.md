@@ -1,4 +1,5 @@
 # Simple CRUD API
+
 Node JS RS School's course, third task
 
 ## Simple CRUD server app built with Node.js & Typescript
@@ -11,7 +12,7 @@ Node JS RS School's course, third task
 - Go to app folder `cd simple-crud-api`
 - Run `npm i` to install the dependencies
 - Rename file `.env.example` to `.env` and edit the value of PORT variable.
-For example, you can set it to `PORT=4000`
+  For example, you can set it to `PORT=4000`
 
 Use the following scripts:
 
@@ -39,8 +40,8 @@ Use the following scripts:
 
 Use [Postman](https://www.postman.com/) or [Insomnia](https://insomnia.rest/) to send HTTP requests.
 
-In the root folder you can find file with Postman collection `postman_collection.json` - you can import it to Postman to simplify your testing.
+In the root folder you can find a file with Postman collection `postman_collection.json` - you can import it to Postman to simplify your testing.
 
 Default URL will be `http://localhost:4000/api/users`
 
-If you have any questions about the App, you can always find me in Discord Vitaliy (bvfromru)#4741
+If you have any questions about the App, you can always find me in Discord `Vitaliy (bvfromru)#4741`

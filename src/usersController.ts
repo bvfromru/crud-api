@@ -1,7 +1,13 @@
 import { v4 as uuidv4 } from "uuid";
 import { Codes, IRequest, IResponse, IUser, Messages } from "./types";
 import { users } from "./usersDB";
-import { validateUserData, validateUserId } from "./utils";
+import { isMulti, validateUserData, validateUserId } from "./utils";
+
+const updateMainDBIfMultiMode = () => {
+  if (isMulti()) {
+    process.send!(users);
+  }
+};
 
 const usersController = {
   getUsers(req: IRequest, res: IResponse) {
@@ -28,7 +34,7 @@ const usersController = {
       if (validateUserData(user)) {
         user.id = uuidv4();
         users.push(user);
-        // process.send!(users);
+        updateMainDBIfMultiMode();
         return res.send!(user, Codes.create);
       }
     }
@@ -48,6 +54,7 @@ const usersController = {
         const userIndex = users.findIndex((user) => user.id === userId);
         if (userIndex > -1) {
           users[userIndex] = user;
+          updateMainDBIfMultiMode();
           return res.send!(user, Codes.ok);
         } else {
           return res.send!(Messages.userDoesntExist, Codes.notFound);
@@ -65,6 +72,7 @@ const usersController = {
       const userIndex = users.findIndex((user) => user.id === userId);
       if (userIndex > -1) {
         users.splice(userIndex, 1);
+        updateMainDBIfMultiMode();
         return res.send!(Messages.userDeleted, Codes.delete);
       } else {
         return res.send!(Messages.userDoesntExist, Codes.notFound);

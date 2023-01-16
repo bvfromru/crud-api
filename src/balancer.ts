@@ -15,10 +15,6 @@ export const startBalancer = (port: number) => {
     workers.push(fork);
   }
 
-  // cluster.on("exit", (worker, code, signal) => {
-  //   console.log(`Worker ${worker.process.pid} died`);
-  // });
-
   createServer(async (req, res) => {
     req.pipe(
       request(
