@@ -6,7 +6,7 @@ export interface IResponse extends ServerResponse {
 }
 
 export interface IRequest extends IncomingMessage {
-  body?: JSON;
+  body?: IUser;
   pathname?: string;
   id?: string;
 }

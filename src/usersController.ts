@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from "uuid";
-import { Codes, IRequest, IResponse, IUser, Messages } from "./types";
+import { Codes, IRequest, IResponse, Messages } from "./types";
 import { users } from "./usersDB";
 import { isMulti, validateUserData, validateUserId } from "./utils";
 
@@ -29,8 +29,7 @@ const usersController = {
 
   createUser(req: IRequest, res: IResponse) {
     if (req.body) {
-      // TODO change typization below
-      const user = req.body as unknown as IUser;
+      const user = req.body;
       if (validateUserData(user)) {
         user.id = uuidv4();
         users.push(user);
@@ -47,8 +46,7 @@ const usersController = {
       return res.send!(Messages.invalidUserId, Codes.invalid);
     }
     if (req.body) {
-      // TODO change typization below
-      const user = req.body as unknown as IUser;
+      const user = req.body;
       if (validateUserData(user)) {
         user.id = userId;
         const userIndex = users.findIndex((user) => user.id === userId);
